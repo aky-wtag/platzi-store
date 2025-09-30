@@ -38,7 +38,7 @@ export default function ProductForm() {
       });
     }
   }, [existingProduct]);
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setProductForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -61,11 +61,14 @@ export default function ProductForm() {
         })
           .unwrap()
           .then(() => {
-            console.log(1)
             navigate(`/product-detail/${id}`);
           });
       } else {
-        await createProduct({...productForm}).unwrap();
+        await createProduct({ ...productForm })
+          .unwrap()
+          .then(() => {
+            navigate(`/`);
+          });
       }
     } catch (err) {
       console.error("Save failed:", err);
