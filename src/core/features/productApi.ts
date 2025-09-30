@@ -13,12 +13,18 @@ export const productSlice = createApi({
   endpoints: (builder) => ({
     getProducts: builder.query<Product[], void>({
       query: () => "products",
-      providesTags: ["Product"],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Product" as const, id })),
+              { type: "Product", id: "LIST" },
+            ]
+          : [{ type: "Product", id: "LIST" }],
     }),
 
     getProductById: builder.query<Product, number>({
       query: (id) => `products/${id}`,
-      providesTags: ["Product"],
+      providesTags: (result, error, id) => [{ type: "Product", id }],
     }),
 
     createProduct: builder.mutation<any, Partial<any>>({
@@ -27,16 +33,16 @@ export const productSlice = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Product"],
+      invalidatesTags: [{ type: "Product", id: "LIST" }],
     }),
 
-    updateProduct: builder.mutation<any, { id: number; data: Partial<any> }>({
+    updateProduct: builder.mutation<Product, { id: number; data: Partial<any> }>({
       query: ({ id, data }) => ({
         url: `products/${id}`,
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["Product"],
+      invalidatesTags: (result, error, { id }) => [{ type: "Product", id }],
     }),
 
     getProductsPaginated: builder.query<
