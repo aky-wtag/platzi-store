@@ -38,7 +38,7 @@ export default function ProductForm() {
       });
     }
   }, [existingProduct]);
-  const handleChange = (e) => {
+  const handleChange = (e:any) => {
     const { name, value } = e.target;
     setProductForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -51,7 +51,7 @@ export default function ProductForm() {
   const addImageField = () => {
     setProductForm((prev) => ({ ...prev, images: [...prev.images, ""] }));
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       if (id) {

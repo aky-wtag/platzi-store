@@ -24,7 +24,7 @@ export const productSlice = createApi({
 
     getProductById: builder.query<Product, number>({
       query: (id) => `products/${id}`,
-      providesTags: (result, error, id) => [{ type: "Product", id }],
+      providesTags: (_result, _error, id) => [{ type: "Product", id }],
     }),
 
     createProduct: builder.mutation<any, Partial<any>>({
@@ -36,13 +36,16 @@ export const productSlice = createApi({
       invalidatesTags: [{ type: "Product", id: "LIST" }],
     }),
 
-    updateProduct: builder.mutation<Product, { id: number; data: Partial<any> }>({
+    updateProduct: builder.mutation<
+      Product,
+      { id: number; data: Partial<any> }
+    >({
       query: ({ id, data }) => ({
         url: `products/${id}`,
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Product", id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Product", id }],
     }),
 
     getProductsPaginated: builder.query<
