@@ -7,6 +7,9 @@ import Navbar from "./components/navbar.tsx";
 import Products from "./pages/products/products.tsx";
 import Product from "./components/product.tsx";
 import ProductForm from "./components/productForm.tsx";
+import Categories from "./pages/categories/category.tsx";
+import CategoryForm from "./components/categoryForm.tsx";
+import Category from "./components/category.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
@@ -18,8 +21,11 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/product-detail/:id" element={<Product />} />
         <Route path="/product-detail/:id/edit" element={<ProductForm />} />
         <Route path="/product/create" element={<ProductForm />} />
-        <Route path="/about" element={<h2>About Page</h2>} />
-        <Route path="/contact" element={<h2>Contact Page</h2>} />
+
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/category-detail/:id" element={<Category />} />
+        <Route path="/category-detail/:id/edit" element={<CategoryForm />} />
+        <Route path="/category/create" element={<CategoryForm />} />
       </Routes>
     </BrowserRouter>
   </Provider>

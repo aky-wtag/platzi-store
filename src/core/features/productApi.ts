@@ -5,7 +5,7 @@ const API_URL: string =
   import.meta.env.VITE_API_URL || "https://api.escuelajs.co/api";
 
 export const productSlice = createApi({
-  reducerPath: "api",
+  reducerPath: "productApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${API_URL}/v1`,
   }),

@@ -18,6 +18,12 @@ export default function Navbar() {
               Products
             </Link>
           </li>
+
+          <li>
+            <Link to="/categories" className="hover:text-gray-200">
+              Categories
+            </Link>
+          </li>
         </ul>
       </nav>
     </>
