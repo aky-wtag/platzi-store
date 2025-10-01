@@ -11,8 +11,22 @@ export const productSlice = createApi({
   }),
   tagTypes: ["Product"],
   endpoints: (builder) => ({
-    getProducts: builder.query<Product[], void>({
-      query: () => "products",
+    getProducts: builder.query<Product[], Record<string, any>>({
+      query: (filters) => {
+        const params = new URLSearchParams();
+        if (filters?.title) params.append("title", filters.title);
+        if (filters?.price) params.append("price", filters.price);
+        if (filters?.price_min) params.append("price_min", filters.price_min);
+        if (filters?.price_max) params.append("price_max", filters.price_max);
+        if (filters?.categoryId)
+          params.append("categoryId", filters.categoryId);
+        if (filters?.categorySlug)
+          params.append("categorySlug", filters.categorySlug);
+        params.append("limit", filters.limit);
+        params.append("offset", filters.offset);
+
+        return `products?${params.toString()}`;
+      },
       providesTags: (result) =>
         result
           ? [
