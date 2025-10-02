@@ -10,6 +10,7 @@ import ProductForm from "./components/productForm.tsx";
 import Categories from "./pages/categories/category.tsx";
 import CategoryForm from "./components/categoryForm.tsx";
 import Category from "./components/category.tsx";
+import LoginPage from "./pages/auth/LoginPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
@@ -26,6 +27,8 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/category-detail/:id" element={<Category />} />
         <Route path="/category-detail/:id/edit" element={<CategoryForm />} />
         <Route path="/category/create" element={<CategoryForm />} />
+
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   </Provider>

@@ -1,23 +1,22 @@
-// import { baseApi } from "../api/baseQuery";
-// import { FETCH_PROFILE_URL, LOGIN_URL } from "../constants/api.constant";
-// import type { AuthResponse } from "../interfaces/authResponse";
-// import type { User } from "../interfaces/user";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// export const authApi = baseApi.injectEndpoints({
-//   endpoints: (builder) => ({
-//     login: builder.mutation<AuthResponse, { email: string; password: string }>({
-//       query: (body) => ({
-//         url: LOGIN_URL,
-//         method: "POST",
-//         body,
-//       }),
-//       invalidatesTags: ["Auth"],
-//     }),
-//     profile: builder.query<User, void>({
-//       query: () => FETCH_PROFILE_URL,
-//       providesTags: ["Auth"],
-//     }),
-//   }),
-// });
+const API_URL: string =
+  import.meta.env.VITE_API_URL || "https://api.escuelajs.co/api";
 
-// export const { useLoginMutation, useProfileQuery } = authApi;
+export const authSlice = createApi({
+  reducerPath: "authApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: API_URL + "/v1",
+  }),
+  endpoints: (builder) => ({
+    login: builder.mutation<any, Partial<any>>({
+      query: ({ data }) => ({
+        url: "auth/login",
+        method: "POST",
+        body: data,
+      }),
+    }),
+  }),
+});
+
+export const { useLoginMutation } = authSlice;

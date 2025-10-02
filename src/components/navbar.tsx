@@ -24,6 +24,11 @@ export default function Navbar() {
               Categories
             </Link>
           </li>
+          <li>
+            <Link to="/login" className="hover:text-gray-200">
+              Login
+            </Link>
+          </li>
         </ul>
       </nav>
     </>

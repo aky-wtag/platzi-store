@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "../../core/features/productApi";
 import { useState } from "react";
+import { useGetAllCategoriesQuery } from "../../core/features/categoryApi";
 
 export default function Products() {
   const [filters, setFilters] = useState({
@@ -12,6 +13,7 @@ export default function Products() {
     offset: 0,
   });
   const { data: products, error, isLoading } = useGetProductsQuery(filters);
+  const { data: categories } = useGetAllCategoriesQuery();
 
   if (isLoading) return <p>Loading Products....</p>;
   if (error) return <p>Error Occurred !!!</p>;
@@ -33,15 +35,18 @@ export default function Products() {
         <div className="flex">
           <div className="size-14 grow-2">
             <h2 className="ps-4">Filters</h2>
-            <div className="ps-4">
+            <div className="ps-4 flex flex-col pr-5">
+              <label htmlFor="name" 
+                className="mt-5">Name</label>
               <input
+                id="name"
                 type="text"
                 placeholder="Search by Name"
                 value={filters.title}
                 onChange={(e) =>
                   setFilters({ ...filters, title: e.target.value })
                 }
-                className="my-5 border"
+                className="border"
               />
 
               <input
@@ -64,15 +69,19 @@ export default function Products() {
                 className="my-5 border"
               />
 
-              <input
-                type="number"
-                placeholder="Category ID"
-                value={filters.categoryId}
+              <label htmlFor="category">Categories</label>
+              <select
+                className="border"
+                id="category"
                 onChange={(e) =>
                   setFilters({ ...filters, categoryId: e.target.value })
                 }
-                className="my-5 border"
-              />
+              >
+                <option value="">All</option>
+                {categories?.map((x) => (
+                  <option value={x.id}>{x.name}</option>
+                ))}
+              </select>
             </div>
           </div>
           <div className="size-14 grow-8 pr-4">
@@ -113,7 +122,9 @@ export default function Products() {
             <div className="text-center p-5">
               <button
                 className=" py-2 px-4 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition"
-                onClick={()=>setFilters({ ...filters, limit: filters.limit + 25 })}
+                onClick={() =>
+                  setFilters({ ...filters, limit: filters.limit + 25 })
+                }
               >
                 Show More
               </button>

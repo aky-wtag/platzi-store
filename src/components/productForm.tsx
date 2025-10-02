@@ -5,6 +5,7 @@ import {
   useUpdateProductMutation,
 } from "../core/features/productApi";
 import { useNavigate, useParams } from "react-router-dom";
+import { useGetAllCategoriesQuery } from "../core/features/categoryApi";
 
 export default function ProductForm() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function ProductForm() {
     error,
     isLoading,
   } = useGetProductByIdQuery(+id!, { skip: !id });
+  const { data: categories } = useGetAllCategoriesQuery();
   const [createProduct] = useCreateProductMutation();
   const [updateProduct] = useUpdateProductMutation();
 
@@ -151,14 +153,17 @@ export default function ProductForm() {
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Category
           </label>
-          <input
-            type="number"
-            name="categoryId"
-            value={productForm.categoryId}
-            onChange={handleChange}
-            required
+          <select
             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+            id="category"
+            onChange={handleChange}
+            name="categoryId"
+            required
+          >
+            {categories?.map((x) => (
+              x.name && <option value={x.id}>{x.name}</option>
+            ))}
+          </select>
         </div>
 
         {/* Images */}
