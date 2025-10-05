@@ -1,0 +1,49 @@
+import type { Product } from "../interfaces/product";
+
+export const openDB = () => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("cartDB", 1);
+
+    request.onupgradeneeded = (event: any) => {
+      const db = event.target!["result"];
+      if (!db.objectStoreNames.contains("cart")) {
+        db.createObjectStore("cart", { keyPath: "id" });
+      }
+    };
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+
+    request.onerror = () => {
+      reject("Failed to open IndexedDB");
+    };
+  });
+};
+
+export const saveCartToDB = async (items: Product[]) => {
+  const db = await openDB();
+  const tx = db.transaction("cart", "readwrite");
+  const store = tx.objectStore("cart");
+
+  store.clear();
+
+  items.forEach((item) => {
+    store.put(item);
+  });
+
+  return tx.complete;
+};
+
+export const loadCartFromDB = async () => {
+  const db = await openDB();
+  const tx = db.transaction("cart", "readonly");
+  const store = tx.objectStore("cart");
+
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject("Failed to load cart from IndexedDB");
+  });
+};

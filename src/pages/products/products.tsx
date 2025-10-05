@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "../../core/features/productApi";
 import { useState } from "react";
 import { useGetAllCategoriesQuery } from "../../core/features/categoryApi";
+import addToCartsvg from "../../assets/add-to-cart.svg";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../core/features/cartSlice";
 
 export default function Products() {
+  const dispatch = useDispatch();
   const [filters, setFilters] = useState({
     title: "",
     price_min: "",
@@ -36,8 +40,9 @@ export default function Products() {
           <div className="size-14 grow-2">
             <h2 className="ps-4">Filters</h2>
             <div className="ps-4 flex flex-col pr-5">
-              <label htmlFor="name" 
-                className="mt-5">Name</label>
+              <label htmlFor="name" className="mt-5">
+                Name
+              </label>
               <input
                 id="name"
                 type="text"
@@ -79,7 +84,9 @@ export default function Products() {
               >
                 <option value="">All</option>
                 {categories?.map((x) => (
-                  <option value={x.id}>{x.name}</option>
+                  <option key={x.id} value={x.id}>
+                    {x.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -110,13 +117,25 @@ export default function Products() {
               style={{ height: "76dvh", overflowY: "auto" }}
             >
               {products?.map((p) => (
-                <Link key={p.id} to={`product-detail/${p.id}`}>
-                  <div className="">
-                    <img src={p.images[0]} alt={p.title} />
-                    <h3 className="mt-2">{p.title}</h3>
-                    <h4 className="font-bold mt-1">{`$${p.price}`}</h4>
+                <>
+                  <div>
+                    <Link key={p.id} to={`product-detail/${p.id}`}>
+                      <div className="">
+                        <img src={p.images[0]} alt={p.title} />
+                        <h3 className="mt-2">{p.title.slice(0, 20)}...</h3>
+                      </div>
+                    </Link>
+                    <div className="flex justify-between">
+                      <div>
+                        <h4 className="font-bold mt-1">{`$${p.price}`}</h4>
+                      </div>
+
+                      <button onClick={() => dispatch(addToCart(p))}>
+                        <img src={addToCartsvg} alt="" width={"18px"} />
+                      </button>
+                    </div>
                   </div>
-                </Link>
+                </>
               ))}
             </div>
             <div className="text-center p-5">
