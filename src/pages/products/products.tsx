@@ -5,6 +5,7 @@ import { useGetAllCategoriesQuery } from "../../core/features/categoryApi";
 import addToCartsvg from "../../assets/add-to-cart.svg";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../core/features/cartSlice";
+import { Slider } from "@mui/material";
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -18,7 +19,13 @@ export default function Products() {
   });
   const { data: products, error, isLoading } = useGetProductsQuery(filters);
   const { data: categories } = useGetAllCategoriesQuery();
-
+  const handlePriceChange = (e, newValue) => {
+    setFilters({
+      ...filters,
+      price_min: newValue[0],
+      price_max: newValue[1],
+    });
+  };
   if (isLoading) return <p>Loading Products....</p>;
   if (error) return <p>Error Occurred !!!</p>;
   return (
@@ -54,25 +61,18 @@ export default function Products() {
                 className="border"
               />
 
-              <input
-                type="number"
-                placeholder="Min Price"
-                value={filters.price_min}
-                onChange={(e) =>
-                  setFilters({ ...filters, price_min: e.target.value })
-                }
-                className="my-5 border"
+              <label className="mt-5">Price Range</label>
+              <Slider
+                value={[+filters.price_min, +filters.price_max]}
+                onChange={handlePriceChange}
+                valueLabelDisplay="auto"
+                min={0}
+                max={200}
               />
-
-              <input
-                type="number"
-                placeholder="Max Price"
-                value={filters.price_max}
-                onChange={(e) =>
-                  setFilters({ ...filters, price_max: e.target.value })
-                }
-                className="my-5 border"
-              />
+              <div className="flex justify-between text-sm">
+                <span>${filters.price_min}</span>
+                <span>${filters.price_max}</span>
+              </div>
 
               <label htmlFor="category">Categories</label>
               <select
@@ -117,25 +117,23 @@ export default function Products() {
               style={{ height: "76dvh", overflowY: "auto" }}
             >
               {products?.map((p) => (
-                <>
-                  <div>
-                    <Link key={p.id} to={`product-detail/${p.id}`}>
-                      <div className="">
-                        <img src={p.images[0]} alt={p.title} />
-                        <h3 className="mt-2">{p.title.slice(0, 20)}...</h3>
-                      </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <h4 className="font-bold mt-1">{`$${p.price}`}</h4>
-                      </div>
-
-                      <button onClick={() => dispatch(addToCart(p))}>
-                        <img src={addToCartsvg} alt="" width={"18px"} />
-                      </button>
+                <div key={p.id}>
+                  <Link to={`product-detail/${p.id}`}>
+                    <div>
+                      <img src={p.images[0]} alt={p.title} />
+                      <h3 className="mt-2">{p.title.slice(0, 20)}...</h3>
                     </div>
+                  </Link>
+                  <div className="flex justify-between">
+                    <div>
+                      <h4 className="font-bold mt-1">{`$${p.price}`}</h4>
+                    </div>
+
+                    <button onClick={() => dispatch(addToCart(p))}>
+                      <img src={addToCartsvg} alt="" width={"18px"} />
+                    </button>
                   </div>
-                </>
+                </div>
               ))}
             </div>
             <div className="text-center p-5">

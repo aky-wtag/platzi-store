@@ -1,7 +1,15 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { fetchCart } from "../core/features/cartSlice";
 
 export default function Navbar() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, [dispatch]);
+  
   const { items } = useSelector((state) => state.cart);
   return (
     <>

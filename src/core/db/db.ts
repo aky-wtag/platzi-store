@@ -27,7 +27,6 @@ export const saveCartToDB = async (items: Product[]) => {
   const store = tx.objectStore("cart");
 
   store.clear();
-
   items.forEach((item) => {
     store.put(item);
   });
@@ -35,15 +34,17 @@ export const saveCartToDB = async (items: Product[]) => {
   return tx.complete;
 };
 
-export const loadCartFromDB = async () => {
+export const loadCartFromDB = async (): Promise<Product[]> => {
   const db = await openDB();
   const tx = db.transaction("cart", "readonly");
   const store = tx.objectStore("cart");
-
+  const allItemsRequest = store.getAll();
   return new Promise((resolve, reject) => {
-    const request = store.getAll();
-
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject("Failed to load cart from IndexedDB");
+    allItemsRequest.onsuccess = () => {
+      resolve(allItemsRequest.result);
+    };
+    allItemsRequest.onerror = () => {
+      reject("Failed to load cart from DB");
+    };
   });
 };

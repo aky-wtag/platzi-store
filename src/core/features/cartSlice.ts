@@ -2,20 +2,17 @@ import { loadCartFromDB, saveCartToDB } from "../db/db";
 import type { Product } from "./../interfaces/product";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const loadCart = createAsyncThunk("cart/loadCart", async () => {
-  const items: Product[] = await loadCartFromDB() as Product[];
-  const totalAmount = items.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-  return { items, totalAmount };
+export const fetchCart = createAsyncThunk("cart/fetchCart", async () => {
+  const items = await loadCartFromDB();
+  return items;
 });
 
-const initialState: { items: Product[]; totalAmount: number, status: string } = {
-  items: [],
-  totalAmount: 0,
-  status: "idle",
-};
+const initialState: { items: Product[]; totalAmount: number; status: string } =
+  {
+    items: [],
+    totalAmount: 0,
+    status: "idle",
+  };
 
 export const cartSlice = createSlice({
   name: "cart",
@@ -35,7 +32,7 @@ export const cartSlice = createSlice({
         (total, item) => total + item.price * item.quantity,
         0
       );
-      saveCartToDB(state.items);
+      saveCartToDB(JSON.parse(JSON.stringify(state.items)));
     },
     removeFromCart: (state, action) => {
       const id = action.payload;
@@ -44,12 +41,12 @@ export const cartSlice = createSlice({
         (total, item) => total + item.price * item.quantity,
         0
       );
-      saveCartToDB(state.items);
+      saveCartToDB(JSON.parse(JSON.stringify(state.items)));
     },
     clearCart: (state) => {
       state.items = [];
       state.totalAmount = 0;
-      saveCartToDB(state.items);
+      saveCartToDB(JSON.parse(JSON.stringify(state.items)));
     },
     updateQuantity: (state, action) => {
       const { id, quantity } = action.payload;
@@ -64,8 +61,17 @@ export const cartSlice = createSlice({
         0
       );
 
-      saveCartToDB(state.items);
+      saveCartToDB(JSON.parse(JSON.stringify(state.items)));
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchCart.fulfilled, (state, action) => {
+      state.items = action.payload;
+      state.totalAmount = state.items.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+    });
   },
 });
 
