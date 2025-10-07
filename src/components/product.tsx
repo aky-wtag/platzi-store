@@ -2,8 +2,11 @@ import { Link, useParams } from "react-router-dom";
 import { useGetProductByIdQuery } from "../core/features/productApi";
 import { useState } from "react";
 import editIcon from "../assets/edit-icon.svg";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../core/features/cartSlice";
 
 export default function Product() {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const {
     data: product,
@@ -55,6 +58,7 @@ export default function Product() {
           <h2 className="text-xl mt-2">Category: {product?.category.name}</h2>
           <p className="mt-10">
             <button
+              onClick={() => dispatch(addToCart(product))}
               type="button"
               className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
             >
