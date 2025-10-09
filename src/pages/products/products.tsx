@@ -19,7 +19,7 @@ export default function Products() {
   });
   const { data: products, error, isLoading } = useGetProductsQuery(filters);
   const { data: categories } = useGetAllCategoriesQuery();
-  const handlePriceChange = (event: Event, newValue: number | number[]) => {
+  const handlePriceChange = (_: Event, newValue: number | number[]) => {
     if (Array.isArray(newValue)) {
       setFilters({
         ...filters,
