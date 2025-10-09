@@ -11,20 +11,22 @@ export default function Products() {
   const dispatch = useDispatch();
   const [filters, setFilters] = useState({
     title: "",
-    price_min: "",
-    price_max: "",
+    price_min: 0,
+    price_max: 200,
     categoryId: "",
     limit: 25,
     offset: 0,
   });
   const { data: products, error, isLoading } = useGetProductsQuery(filters);
   const { data: categories } = useGetAllCategoriesQuery();
-  const handlePriceChange = (newValue: any) => {
-    setFilters({
-      ...filters,
-      price_min: newValue[0],
-      price_max: newValue[1],
-    });
+  const handlePriceChange = (event: Event, newValue: number | number[]) => {
+    if (Array.isArray(newValue)) {
+      setFilters({
+        ...filters,
+        price_min: newValue[0],
+        price_max: newValue[1],
+      });
+    }
   };
   if (isLoading) return <p>Loading Products....</p>;
   if (error) return <p>Error Occurred !!!</p>;
@@ -63,7 +65,7 @@ export default function Products() {
 
               <label className="mt-5">Price Range</label>
               <Slider
-                value={[+filters.price_min, +filters.price_max]}
+                value={[filters.price_min, filters.price_max]}
                 onChange={handlePriceChange}
                 valueLabelDisplay="auto"
                 min={0}
