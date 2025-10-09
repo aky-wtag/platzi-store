@@ -4,7 +4,7 @@ import { clearCart, removeFromCart, updateQuantity } from "../../core/features/c
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const { items, totalAmount } = useSelector((state) => state.cart);
+  const { items, totalAmount } = useSelector((state: any) => state.cart);
 
   const handleCheckout = () => {
     alert(`Order placed! Total: $${totalAmount}`);

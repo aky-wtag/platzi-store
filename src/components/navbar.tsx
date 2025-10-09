@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import { fetchCart } from "../core/features/cartSlice";
 
 export default function Navbar() {
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
   
-  const { items } = useSelector((state) => state.cart);
+  const { items } = useSelector((state: any) => state.cart);
   return (
     <>
       <nav className="bg-blue-600 text-white px-6 py-3 flex justify-between items-center shadow-md">

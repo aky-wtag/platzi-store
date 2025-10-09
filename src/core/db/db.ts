@@ -22,7 +22,7 @@ export const openDB = () => {
 };
 
 export const saveCartToDB = async (items: Product[]) => {
-  const db = await openDB();
+  const db: any = await openDB();
   const tx = db.transaction("cart", "readwrite");
   const store = tx.objectStore("cart");
 
@@ -35,7 +35,7 @@ export const saveCartToDB = async (items: Product[]) => {
 };
 
 export const loadCartFromDB = async (): Promise<Product[]> => {
-  const db = await openDB();
+  const db: any = await openDB();
   const tx = db.transaction("cart", "readonly");
   const store = tx.objectStore("cart");
   const allItemsRequest = store.getAll();

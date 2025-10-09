@@ -37,7 +37,7 @@ export const categorySlice = createApi({
     }),
 
     createCategory: builder.mutation<any, Partial<any>>({
-      query: ({ id, data }) => ({
+      query: ({ data }) => ({
         url: `categories`,
         method: "POST",
         body: data,
