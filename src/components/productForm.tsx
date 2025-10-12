@@ -91,12 +91,13 @@ export default function ProductForm() {
 
         {/* Title */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
             Title
           </label>
           <input
             type="text"
             name="title"
+            id="title"
             value={productForm.title}
             onChange={handleChange}
             required
@@ -106,12 +107,13 @@ export default function ProductForm() {
 
         {/* Slug */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-1">
             Slug
           </label>
           <input
             type="text"
             name="slug"
+            id="slug"
             value={productForm.slug}
             onChange={handleChange}
             required
@@ -121,12 +123,13 @@ export default function ProductForm() {
 
         {/* Price */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
             Price
           </label>
           <input
             type="number"
             name="price"
+            id="price"
             value={productForm.price}
             onChange={handleChange}
             required
@@ -136,11 +139,12 @@ export default function ProductForm() {
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
             Description
           </label>
           <textarea
             name="description"
+            id="description"
             value={productForm.description}
             onChange={handleChange}
             required
@@ -150,7 +154,7 @@ export default function ProductForm() {
 
         {/* Category */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
             Category
           </label>
           <select
@@ -168,7 +172,7 @@ export default function ProductForm() {
 
         {/* Images */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="itemimg" className="block text-sm font-medium text-gray-700 mb-2">
             Images
           </label>
           <div className="space-y-2">
@@ -176,6 +180,7 @@ export default function ProductForm() {
               <input
                 key={i}
                 type="text"
+                id="itemimg"
                 value={img}
                 onChange={(e) => handleImageChange(i, e.target.value)}
                 placeholder="Image URL"

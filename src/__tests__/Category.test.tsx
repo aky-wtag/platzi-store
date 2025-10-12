@@ -3,14 +3,6 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Category from "../components/category";
 import * as categoryApi from "../core/features/categoryApi";
-import type {
-  QueryActionCreatorResult,
-  QueryDefinition,
-  BaseQueryFn,
-  FetchArgs,
-  FetchBaseQueryError,
-  FetchBaseQueryMeta,
-} from "@reduxjs/toolkit/query";
 
 vi.mock("react-router-dom", async () => {
   const actual: any = await vi.importActual("react-router-dom");
@@ -45,24 +37,7 @@ describe("Category Component", () => {
       error: null,
       isLoading: true,
       isFetching: false,
-      refetch: function (): QueryActionCreatorResult<
-        QueryDefinition<
-          number,
-          BaseQueryFn<
-            string | FetchArgs,
-            unknown,
-            FetchBaseQueryError,
-            {},
-            FetchBaseQueryMeta
-          >,
-          "Category",
-          typeof Category,
-          "categoryApi",
-          unknown
-        >
-      > {
-        throw new Error("Function not implemented.");
-      },
+      refetch: (() => {}) as any,
     });
     render(
       <MemoryRouter>
@@ -80,7 +55,7 @@ describe("Category Component", () => {
       error: { message: "Failed" },
       isLoading: false,
       isFetching: false,
-      refetch: () => {},
+      refetch: (() => {}) as any,
     });
     render(
       <MemoryRouter>
@@ -101,7 +76,7 @@ describe("Category Component", () => {
       },
       error: null,
       isLoading: false,
-      refetch: () => {},
+      refetch: (() => {}) as any,
     });
 
     render(

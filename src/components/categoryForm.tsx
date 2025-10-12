@@ -76,11 +76,12 @@ export default function CategoryForm() {
 
         {/* Title */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
             Name
           </label>
           <input
             type="text"
+            id="name"
             name="name"
             value={categoryForm.name}
             onChange={handleChange}
@@ -91,10 +92,11 @@ export default function CategoryForm() {
 
         {/* Slug */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-1">
             Slug
           </label>
           <input
+            id="slug"
             type="text"
             name="slug"
             value={categoryForm.slug}
