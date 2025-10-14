@@ -4,7 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import * as categoryApi from "../core/features/categoryApi";
 import Categories from "../pages/categories/category";
 
-
 vi.mock("../core/features/categoryApi", () => ({
   useGetAllCategoriesQuery: vi.fn(),
 }));
@@ -29,7 +28,7 @@ describe("Categories Component", () => {
     });
 
     renderWithRouter();
-    expect(screen.getByText("Category Loading...")).toBeInTheDocument();
+    expect(screen.getByText(/Loading Categories/i)).toBeInTheDocument();
   });
 
   it("renders error state", () => {
@@ -40,7 +39,7 @@ describe("Categories Component", () => {
     });
 
     renderWithRouter();
-    expect(screen.getByText("Error!!!")).toBeInTheDocument();
+    expect(screen.getByText(/Error loading categories/i)).toBeInTheDocument();
   });
 
   it("renders category list correctly", () => {
@@ -67,15 +66,18 @@ describe("Categories Component", () => {
     expect(images[1].src).toContain("cat2.jpg");
   });
 
-  it("renders Add Category button with correct link", async () => {
+  it("renders Add Category button with correct link", () => {
     (categoryApi.useGetAllCategoriesQuery as any).mockReturnValue({
       data: [],
       isLoading: false,
       error: null,
     });
-
+  
     renderWithRouter();
-    const addButton = screen.getByRole("button", { name: "Add Category" });
+  
+    const addButton = screen.getByText(/\+ Add Category/i); // match actual text
     expect(addButton).toBeInTheDocument();
+    expect(addButton.closest("a")).toHaveAttribute("href", "/category/create");
   });
+  
 });

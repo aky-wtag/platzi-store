@@ -44,7 +44,6 @@ describe("Cart Component", () => {
     cart: cartWithItems,
     productApi: { queries: {}, mutations: {}, provided: {}, subscriptions: {} },
     categoryApi: { queries: {}, mutations: {}, provided: {}, subscriptions: {} },
-    authApi: { queries: {}, mutations: {}, provided: {}, subscriptions: {} },
   };
 
   const renderWithProvider = (state = preloadedState) => {
