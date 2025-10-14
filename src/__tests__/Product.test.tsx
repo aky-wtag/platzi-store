@@ -69,9 +69,9 @@ describe("Product Component", () => {
       error: { message: "Failed" },
       isLoading: false,
     } as any);
-  
+
     renderWithProvider();
-  
+
     expect(screen.getByText(/Error Occurred/i)).toBeInTheDocument();
   });
 
@@ -89,17 +89,23 @@ describe("Product Component", () => {
       error: null,
       isLoading: false,
     } as any);
-  
+
     renderWithProvider();
-  
+
     expect(screen.getByText("Test Product")).toBeInTheDocument();
     expect(screen.getByText("Product description")).toBeInTheDocument();
-    expect(screen.getByText("$99.99")).toBeInTheDocument();
-    expect(screen.getByText(/Test Category/)).toBeInTheDocument(); // fixed
-  
+    expect(screen.getByText(/Test Category/)).toBeInTheDocument();
+
+    const priceElement = screen.getByText(
+      (_, element) =>
+        element?.tagName.toLowerCase() === "p" &&
+        element.textContent!.includes("$99.99")
+    );
+    expect(priceElement).toBeInTheDocument();
+
     const thumbnails = screen.getAllByRole("img");
     fireEvent.click(thumbnails[1]);
-  
+
     fireEvent.click(screen.getByText(/Add to Cart/i));
     expect(mockDispatch).toHaveBeenCalledWith(
       cartSlice.addToCart({
@@ -112,5 +118,4 @@ describe("Product Component", () => {
       })
     );
   });
-  
 });

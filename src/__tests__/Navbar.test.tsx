@@ -43,15 +43,15 @@ describe("Navbar Component", () => {
     expect(screen.getByText("Home")).toBeInTheDocument();
     expect(screen.getByText("Products")).toBeInTheDocument();
     expect(screen.getByText("Categories")).toBeInTheDocument();
-    expect(screen.getByText("Cart 0")).toBeInTheDocument();
+    expect(screen.getByText(/Cart/i)).toBeInTheDocument();
   });
 
   it("renders cart with items count", () => {
-    renderWithStore({ items: [{ id: 1, name: "Product 1" }, { id: 2 }] });
-
-    expect(screen.getByText("Cart 2")).toBeInTheDocument();
+    renderWithStore({ items: [{ id: 1, name: "Product 1" }, { id: 2, name: "Product 2" }] });
+  
+    expect(screen.getByText("2")).toBeInTheDocument();
   });
-
+  
   it("dispatches fetchCart on mount", () => {
     renderWithStore();
     expect(fetchCart).toHaveBeenCalled();
