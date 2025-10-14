@@ -50,10 +50,13 @@ export const cartSlice = createSlice({
     },
     updateQuantity: (state, action) => {
       const { id, quantity } = action.payload;
-      const item = state.items.find((item) => item.id === id);
-
-      if (item && quantity > 0) {
-        item.quantity = quantity;
+      const item = state.items.find((i) => i.id === id);
+      if (item) {
+        if (quantity <= 0) {
+          state.items = state.items.filter((i) => i.id !== id);
+        } else {
+          item.quantity = quantity;
+        }
       }
 
       state.totalAmount = state.items.reduce(
