@@ -18,7 +18,6 @@ export default function LoginPage() {
   const onSubmit = async (data: FormData) => {
     try {
       await login(data).unwrap();
-      // handle success (redirect or show toast)
     } catch (err) {
       console.error("Login failed", err);
     }

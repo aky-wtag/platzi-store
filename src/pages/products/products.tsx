@@ -131,7 +131,7 @@ export default function Products() {
                       <h4 className="font-bold mt-1">{`$${p.price}`}</h4>
                     </div>
 
-                    <button onClick={() => dispatch(addToCart(p))}>
+                    <button onClick={() => dispatch(addToCart(p))} aria-label={`Add ${p.title} to cart`}>
                       <img src={addToCartsvg} alt="" width={"18px"} />
                     </button>
                   </div>

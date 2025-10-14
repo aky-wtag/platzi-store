@@ -43,7 +43,6 @@ describe("Navbar Component", () => {
     expect(screen.getByText("Home")).toBeInTheDocument();
     expect(screen.getByText("Products")).toBeInTheDocument();
     expect(screen.getByText("Categories")).toBeInTheDocument();
-    expect(screen.getByText("Login")).toBeInTheDocument();
     expect(screen.getByText("Cart 0")).toBeInTheDocument();
   });
 

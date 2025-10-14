@@ -4,9 +4,8 @@ import * as router from "react-router-dom";
 import * as productApi from "../core/features/productApi";
 import * as cartSlice from "../core/features/cartSlice";
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import cartReducer from "../core/features/cartSlice";
 import Product from "../components/product";
+import { createMockStore } from "./mockStore";
 
 vi.mock("../assets/edit-icon.svg", () => ({ default: "edit-icon.svg" }));
 
@@ -39,12 +38,7 @@ describe("Product Component", () => {
   });
 
   const renderWithProvider = () => {
-    const store = configureStore({
-      reducer: { cart: cartReducer },
-      preloadedState: {
-        cart: { items: [], totalAmount: 0, status: "idle" },
-      },
-    });
+    const store = createMockStore();
 
     render(
       <Provider store={store}>
@@ -98,19 +92,16 @@ describe("Product Component", () => {
 
     renderWithProvider();
 
-    // Product info
     expect(screen.getByText("Test Product")).toBeInTheDocument();
     expect(screen.getByText("Product description")).toBeInTheDocument();
     expect(screen.getByText("$99.99")).toBeInTheDocument();
     expect(screen.getByText("Category: Test Category")).toBeInTheDocument();
 
-    // Switch image
     const thumbnails = screen.getAllByRole("img");
     expect(thumbnails[0]).toHaveAttribute("src", "img1.jpg");
     fireEvent.click(thumbnails[1]);
     expect(thumbnails[1]).toHaveAttribute("src", "img2.jpg");
 
-    // Add to cart
     fireEvent.click(screen.getByText("Add To Cart"));
     expect(mockDispatch).toHaveBeenCalledWith(
       cartSlice.addToCart({

@@ -35,11 +35,6 @@ export default function Navbar() {
             </Link>
           </li>
           <li>
-            <Link to="/login" className="hover:text-gray-200">
-              Login
-            </Link>
-          </li>
-          <li>
             <Link to="/cart" className="hover:text-gray-200">
               Cart {items.length}
             </Link>

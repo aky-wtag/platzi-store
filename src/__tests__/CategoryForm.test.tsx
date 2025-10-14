@@ -15,9 +15,10 @@ vi.mock("react-router-dom", async () => {
 import * as router from "react-router-dom";
 import CategoryForm from "../components/categoryForm";
 import { Provider } from "react-redux";
-import { store } from "../core/store/store";
+import { createMockStore } from "./mockStore";
 
 describe("CategoryForm Component", () => {
+  const store = createMockStore();
   afterEach(() => {
     vi.resetAllMocks();
   });
@@ -151,3 +152,4 @@ describe("CategoryForm Component", () => {
     });
   });
 });
+

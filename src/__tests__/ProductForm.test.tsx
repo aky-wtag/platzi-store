@@ -1,12 +1,11 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
 import * as router from "react-router-dom";
 import * as productApi from "../core/features/productApi";
 import * as categoryApi from "../core/features/categoryApi";
-import cartReducer from "../core/features/cartSlice";
 import ProductForm from "../components/productForm";
+import { createMockStore } from "./mockStore";
 
 const mockNavigate = vi.fn();
 vi.mock("react-router-dom", async () => {
@@ -18,24 +17,31 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-vi.mock("../core/features/productApi", () => ({
-  useGetProductByIdQuery: vi.fn(),
-  useCreateProductMutation: vi.fn(),
-  useUpdateProductMutation: vi.fn(),
-}));
+vi.mock("../core/features/productApi", async () => {
+  const actual = await vi.importActual<typeof import("../core/features/productApi")>(
+    "../core/features/productApi"
+  );
+  return {
+    ...actual, 
+    useGetProductByIdQuery: vi.fn(),
+    useCreateProductMutation: vi.fn(),
+    useUpdateProductMutation: vi.fn(),
+  };
+});
 
-vi.mock("../core/features/categoryApi", () => ({
-  useGetAllCategoriesQuery: vi.fn(),
-}));
+vi.mock("../core/features/categoryApi", async () => {
+  const actual = await vi.importActual<typeof import("../core/features/categoryApi")>(
+    "../core/features/categoryApi"
+  );
+  return {
+    ...actual, 
+    useGetAllCategoriesQuery: vi.fn(),
+  };
+});
 
 describe("ProductForm Component", () => {
   const renderWithProvider = () => {
-    const store = configureStore({
-        reducer: { cart: cartReducer },
-        preloadedState: {
-          cart: { items: [], totalAmount: 0, status: "idle" },
-        },
-      });
+  const store = createMockStore();
     render(
       <Provider store={store}>
         <ProductForm />
@@ -136,7 +142,6 @@ describe("ProductForm Component", () => {
 
     renderWithProvider();
 
-    // ensure data populated
     expect(screen.getByDisplayValue("Old Product")).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Title"), { target: { value: "Updated Product" } });
 
