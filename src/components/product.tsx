@@ -15,58 +15,97 @@ export default function Product() {
   } = useGetProductByIdQuery(+id!, {
     skip: !id,
   });
-  const [currntIndex, setIndex] = useState(0);
-  if (isLoading) return <>Loading Product...</>;
-  if (error) return <>Error Occured!!!</>;
+
+  const [currentIndex, setIndex] = useState(0);
+
+  if (isLoading) return <p className="text-center mt-10">Loading Product...</p>;
+  if (error) return <p className="text-center text-red-500 mt-10">Error Occurred!</p>;
+
   return (
-    <>
-      <div className="flex">
-        <div className="p-5 flex size-14 grow-6">
-          <div className="size-14 grow-1">
-            <ul>
-              {product?.images.map((image, index) => (
-                <li
-                  key={index}
-                  className="my-5"
-                  onClick={() => setIndex(index)}
-                >
-                  <img src={image} />
-                </li>
-              ))}
-            </ul>
+    <div className="px-4 sm:px-6 lg:px-10 py-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+        <h1 className="font-bold text-2xl text-gray-800">🛒 Product Detail</h1>
+        <Link to={`/product-detail/${id}/edit`}>
+          <button className="flex items-center gap-2 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200">
+            <img src={editIcon} alt="Edit" className="w-4 h-4" />
+            Edit Product
+          </button>
+        </Link>
+      </div>
+
+      {/* Product Layout */}
+      <div className="flex flex-col lg:flex-row bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
+        {/* Image Gallery */}
+        <div className="lg:w-1/2 flex flex-col md:flex-row lg:flex-col">
+          {/* Thumbnails */}
+          <div className="flex md:flex-col overflow-x-auto md:overflow-y-auto gap-2 p-4 border-r border-gray-100">
+            {product?.images?.map((image, index) => (
+              <button
+                key={index}
+                onClick={() => setIndex(index)}
+                className={`border-2 rounded-md overflow-hidden ${
+                  currentIndex === index
+                    ? "border-blue-500"
+                    : "border-transparent hover:border-gray-300"
+                }`}
+              >
+                <img
+                  src={image}
+                  alt={`${product.title}-${index}`}
+                  className="w-16 h-16 object-cover"
+                />
+              </button>
+            ))}
           </div>
-          <div className="size-14 grow-9 ml-2 mt-5">
-            <img src={product?.images[currntIndex]} />
+
+          {/* Main Image */}
+          <div className="flex-grow flex justify-center items-center bg-gray-50">
+            <img
+              src={product?.images[currentIndex]}
+              alt={product?.title}
+              className="object-contain max-h-[500px] p-4"
+            />
           </div>
         </div>
-        <div className="size-14 grow-6">
-          <div className="flex">
-            <div className="grow">
-              <h1 className="text-2xl font-bold pt-5 mt-4">{product?.title}</h1>
-            </div>
-            <div className="text-right">
-              <Link to={`/product-detail/${id}/edit`}>
-                <button className="pt-5 mt-4 pr-5">
-                  <img src={editIcon} />
-                </button>
-              </Link>
-            </div>
+
+        {/* Product Info */}
+        <div className="lg:w-1/2 p-6 flex flex-col justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              {product?.title}
+            </h1>
+            <p className="text-3xl font-semibold text-blue-600 mb-4">
+              ${product?.price}
+            </p>
+
+            <h2 className="text-lg font-semibold mb-2 text-gray-700">
+              Description
+            </h2>
+            <p className="text-gray-600 mb-5 leading-relaxed text-justify">
+              {product?.description}
+            </p>
+
+            <p className="text-sm text-gray-500">
+              Category:{" "}
+              <span className="font-medium text-gray-800">
+                {product?.category.name}
+              </span>
+            </p>
           </div>
-          <p className="text-xl font-bold mt-2">${product?.price}</p>
-          <h2 className="mt-3 text-xl font-bold">Description</h2>
-          <p className="text-justify pr-5">{product?.description}</p>
-          <h2 className="text-xl mt-2">Category: {product?.category.name}</h2>
-          <p className="mt-10">
+
+          {/* Add to Cart Button */}
+          <div className="mt-8">
             <button
               onClick={() => dispatch(addToCart(product))}
               type="button"
-              className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+              className="w-full sm:w-auto bg-gray-800 hover:bg-gray-900 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-gray-300"
             >
-              Add To Cart
+              🛒 Add to Cart
             </button>
-          </p>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
