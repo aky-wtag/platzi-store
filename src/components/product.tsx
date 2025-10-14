@@ -94,7 +94,7 @@ export default function Product() {
             {quantity > 0 ? (
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => dispatch(updateQuantity({ id: product.id, quantity: quantity - 1 }))}
+                  onClick={() => dispatch(updateQuantity({ id: product!.id, quantity: quantity - 1 }))}
                   className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
                 >
                   -
@@ -104,12 +104,12 @@ export default function Product() {
                   min={1}
                   value={quantity}
                   onChange={(e) =>
-                    dispatch(updateQuantity({ id: product.id, quantity: Math.max(1, +e.target.value || 1) }))
+                    dispatch(updateQuantity({ id: product!.id, quantity: Math.max(1, +e.target.value || 1) }))
                   }
                   className="w-12 text-center border rounded"
                 />
                 <button
-                  onClick={() => dispatch(updateQuantity({ id: product.id, quantity: quantity + 1 }))}
+                  onClick={() => dispatch(updateQuantity({ id: product!.id, quantity: quantity + 1 }))}
                   className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
                 >
                   +
